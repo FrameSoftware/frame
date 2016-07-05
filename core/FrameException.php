@@ -65,6 +65,8 @@
       return (int) $this->code;
     }
 
+    function index(){}
+
     function status(){
       //retourne le message de l'exception
       return $this->statusf;
