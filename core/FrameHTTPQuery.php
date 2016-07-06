@@ -4,7 +4,7 @@
 
   require_once 'FrameException.php';
   
- 
+ use core\FrameException as FException;
   /**
    * Cette classe est represente une URL qui entre dans le routeur et possede les methodes
    * pour son interogation
@@ -26,7 +26,18 @@
      * Pour teste si le parametre existe reelement
      */
     public function existParam($name){
-        return (isset($this->query[$name]) && $this->query[$name] != "");
+        if(isset($this->query[$name]) && $this->query[$name] != ""){
+            return true;
+        }else{
+            return false;
+        }
+            /*throw new FException\FrameException(array(
+                  'message'=>"Les controlleurs ne doivent pas commencer par des chiffres  !!! ",
+                  'code'=> 401,
+                  'fichier'=>__FILE__,
+                  'ligne'=> __LINE__
+              ));
+        }*/
     }
     
     public function getParam($name){

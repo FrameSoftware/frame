@@ -92,9 +92,9 @@
       public function getControlleur(FHTTPQuery\FrameFrameHTTPQuery $query){
           $defaultController = $this->default_controlleur;
           if($query->existParam('c')){
-              $defaultController = $query->getParam('c');
-              $defaultController = ucfirst(strtolower($defaultController));
-              //on met le nom en minuscule
+              $defaultController = trim($query->getParam('c'));
+              $defaultController = ucfirst(strtolower(trim($defaultController)));
+              //on met le nom en minuscule et on verifie avec les rReGexS
           }//la creation du controlleur est finit
           
           //creation du nom du controlleur
