@@ -6,12 +6,13 @@
    * Cette classe va permettre de gerer les exceptions dans le framework
    *@author simoadonis@gmail.com
    */
-  class FrameException extends ErrorException
+  class FrameException extends \ErrorException
   {
 
-    private $message;
-    private (int) $code;
-    private $status
+    protected $message;
+    protected $code;
+    protected $status;
+    protected $file;
 
     public function __toString(){
       switch ($this->severity)  {
@@ -31,27 +32,30 @@
       default : // Erreur inconnue.
           $type = 'Erreur inconnue';
           break;
-
-
+        }
     }
 
     function __construct($argument= array())
     {
-      this->hydrate($argument);
+      $this->hydrate($argument);
       //on
     }
 
-    private function hydrate($arg=array()){
+    public function hydrate($arg=array()){
       if(isset($arg['message'])){
-        $this->setMessage($arg['message'])
+        $this->setMessage($arg['message']);
       }
 
       if(isset($arg['code'])){
-        $this->setMessage($arg['code'])
+        $this->setCode($arg['code']);
       }
 
       if(isset($arg['status'])){
-        $this->setMessage($arg['status'])
+        $this->setStatus($arg['status']);
+      }
+      
+      if(isset($arg['fichier'])){
+        $this->setFichier($arg['fichier']);
       }
     }
 
@@ -64,8 +68,15 @@
       //retourne le message de l'exception
       return (int) $this->code;
     }
-
-    function index(){}
+    
+    function fichier(){
+        $this->file = $file_name;
+    }
+    
+    function setFichier($file_name){
+        return $this->file = $file_name;
+    }
+    
 
     function status(){
       //retourne le message de l'exception
@@ -76,8 +87,8 @@
       $this->message = $msg;
     }
 
-    function setCode((int) code ){
-      $this->code = code;
+    function setCode( $code ){
+      $this->code = $code;
     }
 
     function setStatus($status){

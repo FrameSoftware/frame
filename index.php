@@ -1,3 +1,8 @@
 <?php
-  echo "Bienvenu dans le framework Frame creer par SIMO ADONIS il est en cour de construction";
-?>
+
+require_once 'core/FrameRouter.php';
+
+use core\FrameRouter as FRouter;
+
+$router = new FRouter\FrameRouter();
+$router->route_url();
