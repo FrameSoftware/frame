@@ -32,7 +32,9 @@
       public function __construct() {
           //a pour role de charge la configuration 
           try {
+              if(file_exists('core/routerConfig.ini')){
                   $config = parse_ini_file('routerConfig.ini');
+                  $this->default_controlleur = ucfirst(strtolower($config['default_controller']));
                   $this->default_method = $config['default_method'];
               }else{
                   throw new FException\FrameException(array(
