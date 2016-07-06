@@ -40,7 +40,8 @@
                   throw new FException\FrameException(array(
                   'message'=>"impossible de charger le fichier de configuration des controlleurs et methodes",
                   'code'=> 401,
-                  'fichier'=>__FILE__
+                  'fichier'=>__FILE__,
+                  'ligne'=> __LINE__
                 ));
               }
               
@@ -76,6 +77,9 @@
            //On doit appeler le moteur de vue pour afficher le message d'erreur ici
             $view= new FViewEngine\FrameView();
             $view->generateErrorFrameException($ex);
+          }  catch (\ReflectionException $rex){
+              $view= new FViewEngine\FrameView();
+              $view->generateErrorReflectionException($rex);
           }
 
       }
@@ -95,7 +99,7 @@
           
           //creation du nom du controlleur
           $classeControlleur = 'Controlleur'.$defaultController;
-          $fichierControlleur = 'Controlleur/'.$classeControlleur.'.php'; //le chemin d'acces
+          $fichierControlleur = 'src/controller/'.$classeControlleur.'.php'; //le chemin d'acces
           if(file_exists($fichierControlleur)){
              //on stocke les données par rapport au conrolleur
              $this->controlleur_class = $classeControlleur;
@@ -104,7 +108,8 @@
               throw new FException\FrameException(array(
                   'message'=>"impossible de trouver le controlleur '$classeControlleur' ",
                   'code'=> 444,
-                  'fichier'=>__FILE__
+                  'fichier'=>__FILE__,
+                  'ligne'=> __LINE__
               ));
           }
       }
@@ -115,7 +120,7 @@
       public function getMethod(FHTTPQuery\FrameFrameHTTPQuery $query){
           $defaultMethod = $this->default_method;
           if($query->existParam('m')){
-              $this->method_name = $query->getParam('c'); //on recupere l'action
+              $this->method_name = $query->getParam('m'); //on recupere l'action
           }else{
               $this->method_name = $defaultMethod;
           }

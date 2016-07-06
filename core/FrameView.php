@@ -19,7 +19,26 @@
     
     public function generateErrorFrameException(FException\FrameException $ex){
         //cette methode doit afficher l'erreur
-        echo 'il y a eu erreur ici ['.$ex->getMessage().']<br/>';
+        $msg =  $ex->getMessage().'<br/>';
+        $code = $ex->getCode();
+        $fichier = $ex->getFile();
+        $ligne = $ex->getLine();
+        $severite = $ex->getSeverity();
+        $dump = ($ex->getTrace());
+        $trace = $ex->getTraceAsString();
+        require_once 'core/ViewEngine/error.php';
+    }
+    
+    public function generateErrorReflectionException(\ReflectionException $ex){
+        //cette methode doit afficher l'erreur
+        $msg = $ex->getMessage().'<br/>';
+        $code = $ex->getCode();
+        $fichier = $ex->getFile();
+        $ligne = $ex->getLine();
+        $severite = 'indefinie';
+        $dump = $ex->getTrace();
+        $trace = $ex->getTraceAsString();
+        require_once 'core/ViewEngine/error.php';
     }
   }
 

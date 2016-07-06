@@ -30,7 +30,7 @@
     }
     
     public function getParam($name){
-        if($this->existParam($mame)){
+        if($this->existParam($name)){
             return $this->query[$name];
         }else{
             throw new FrameException(array(

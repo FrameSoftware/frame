@@ -13,6 +13,7 @@
     protected $code;
     protected $status;
     protected $file;
+    protected $line;
 
     public function __toString(){
       switch ($this->severity)  {
@@ -57,8 +58,17 @@
       if(isset($arg['fichier'])){
         $this->setFichier($arg['fichier']);
       }
+      
+      if(isset($arg['ligne'])){
+        $this->setLine($arg['ligne']);
+      }
     }
 
+    function line(){
+      //retourne le message de l'exception
+      return $this->line;
+    }
+    
     function message(){
       //retourne le message de l'exception
       return $this->message;
@@ -77,6 +87,9 @@
         return $this->file = $file_name;
     }
     
+    function setLine($line_num){
+        return $this->line = $line_num;
+    }
 
     function status(){
       //retourne le message de l'exception
