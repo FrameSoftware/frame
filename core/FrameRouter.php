@@ -27,6 +27,14 @@
       private $method_name;
       private $default_controlleur;
       private $default_method;
+      private $bundle_name;
+      private $bundle_path;
+      private $bundle_default;
+      /*
+       * Le chemin de la ressource a executer
+       */
+      private $total_path;
+
 
 
       public function __construct() {
@@ -36,6 +44,7 @@
                   $config = parse_ini_file('routerConfig.ini');
                   $this->default_controlleur = ucfirst(strtolower($config['default_controller']));
                   $this->default_method = $config['default_method'];
+                  $this->bundle_default = $config['default_bundle'];
               }else{
                   throw new FException\FrameException(array(
                   'message'=>"impossible de charger le fichier de configuration des controlleurs et methodes",
@@ -50,7 +59,7 @@
               $view->generateErrorFrameException($ex);
           }
       }
-
+      
 
       /*
        * prend la requete http en paramettre et effectue le routage
@@ -59,10 +68,11 @@
           try {
             // Fusion des paramètres GET et POST de la requête
             $requete = new FHTTPQuery\FrameFrameHTTPQuery(array_merge($_GET, $_POST));
-            
+            //prevoir la gestion des module(bundle)
             //on initialise les parametres de la requete ici
-            $this->getControlleur($requete);
-            $this->getMethod($requete);
+            $this->getBundle($requete);//on cree le module ici
+            $this->getControlleur($requete);//on cree le controlleur ici
+            $this->getMethod($requete);//on cree la methode ici
             require_once $this->controlleur_path;//on charge le controlleur ici avant la refelexivité
             //on va commencer la reflexivité ici
             $reflect_controlleur = new \ReflectionMethod($this->controlleur_class, $this->method_name);
@@ -83,6 +93,31 @@
           }
 
       }
+      
+      public function getBundle(FHTTPQuery\FrameFrameHTTPQuery $query){
+          $defaultBundle = ucfirst(strtolower(trim($this->bundle_default))); //on recupere le bundle par defaut
+          if($query->existParam('b')){
+              $defaultBundle = ucfirst(strtolower(trim($query->getParam('b'))));
+              //on met le nom en minuscule et on verifie avec les rReGexS
+          }//la creation du bundle est finit
+          
+          //creation du nom du bundle
+          $bundleNom = 'Bundle'.$defaultBundle;
+          $bundlePath= 'src/Bundle'.$defaultBundle; //le chemin d'acces
+          if(is_dir($bundlePath)){
+             //on stocke les données par rapport au conrolleur
+             $this->bundle_name = $bundleNom;
+             $this->bundle_path = $bundlePath;
+          }else{
+              throw new FException\FrameException(array(
+                  'message'=>"impossible de trouver le bundle '$bundleNom' ",
+                  'code'=> 441,
+                  'fichier'=>__FILE__,
+                  'ligne'=> __LINE__
+              ));
+          }
+      }
+      
       /*
        * A pour role d'initialiser le controlleur :
        * si ce n'est pas definie on affecter le controlleur par defaut Authentification
@@ -99,14 +134,14 @@
           
           //creation du nom du controlleur
           $classeControlleur = 'Controlleur'.$defaultController;
-          $fichierControlleur = 'src/controller/'.$classeControlleur.'.php'; //le chemin d'acces
+          $fichierControlleur = $this->bundle_path.'/controller/'.$classeControlleur.'.php'; //le chemin d'acces
           if(file_exists($fichierControlleur)){
              //on stocke les données par rapport au conrolleur
              $this->controlleur_class = $classeControlleur;
              $this->controlleur_path = $fichierControlleur;
           }else{
               throw new FException\FrameException(array(
-                  'message'=>"impossible de trouver le controlleur '$classeControlleur' ",
+                  'message'=>"impossible de trouver le controlleur '$classeControlleur' dans le bundle '$this->bundle_name' ",
                   'code'=> 444,
                   'fichier'=>__FILE__,
                   'ligne'=> __LINE__
