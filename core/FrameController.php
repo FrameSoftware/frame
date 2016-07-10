@@ -10,7 +10,7 @@
   class FrameController
   {
 
-    public function __construct($argument)
+    public function __construct($argument = null)
     {
       # code...
     }

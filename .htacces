@@ -1,6 +1,0 @@
-#Réécrit une URL de type xxx/yyy/zzz en index.php?controleur=xxx&action=yyy&id=zzz
-Options +Followymlinks
-RewriteEngine on
-RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?$ index.php?c=$1&a=$2 [NC,L]
-
-

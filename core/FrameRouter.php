@@ -74,7 +74,9 @@
             $this->getControlleur($requete);//on cree le controlleur ici
             $this->getMethod($requete);//on cree la methode ici
             require_once $this->controlleur_path;//on charge le controlleur ici avant la refelexivité
+            
             //on va commencer la reflexivité ici
+            
             $reflect_controlleur = new \ReflectionMethod($this->controlleur_class, $this->method_name);
             $controlleur = new $this->controlleur_class;//on instancie le controlleur
             if($reflect_controlleur->getParameters()){//si la methode prend des parametres on lance avec GET
@@ -107,7 +109,9 @@
           if(is_dir($bundlePath)){
              //on stocke les données par rapport au conrolleur
              $this->bundle_name = $bundleNom;
+             
              $this->bundle_path = $bundlePath;
+             
           }else{
               throw new FException\FrameException(array(
                   'message'=>"impossible de trouver le bundle '$bundleNom' ",
@@ -138,7 +142,9 @@
           if(file_exists($fichierControlleur)){
              //on stocke les données par rapport au conrolleur
              $this->controlleur_class = $classeControlleur;
+             
              $this->controlleur_path = $fichierControlleur;
+             
           }else{
               throw new FException\FrameException(array(
                   'message'=>"impossible de trouver le controlleur '$classeControlleur' dans le bundle '$this->bundle_name' ",
