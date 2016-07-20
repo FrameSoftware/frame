@@ -10,7 +10,7 @@
    * pour son interogation
    *@author simoadonis@gmail.com
    */
-  class FrameFrameHTTPQuery
+  class FrameHTTPQuery
   {
       /*
        * represente la requet envoye pat le navigateur POST et GET

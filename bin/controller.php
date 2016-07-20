@@ -1,8 +1,9 @@
 <?php 
+namespace BundleDefault;
 
 include_once '../../core/FrameController.php';
 
-namespace BundleDefault;
+
 
 use core\FrameController as FController;
 
