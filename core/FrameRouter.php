@@ -82,6 +82,7 @@ class FrameRouter
               'controller_path'=> $this->controlleur_path,
               'method_name'=> $this->method_name
           )); //on retourne la reponse ici
+          
           return $response;
           
         }catch(FException\FrameException $ex) {
@@ -154,12 +155,12 @@ class FrameRouter
     }
     
     /*
-     * retourne si sa existe la methode d'une requete
-     */
+    * retourne si sa existe la methode d'une requete
+    */
     public function getMethod(FHTTPQuery\FrameHTTPQuery $query){
         $defaultMethod = $this->default_method;
         if($query->existParam('m')){
-            $this->method_name = $query->getParam('m'); //on recupere l'action
+            $this->method_name = $query->getParam('m').'Action'; //on recupere l'action
         }else{
             $this->method_name = $defaultMethod;
         }

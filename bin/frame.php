@@ -18,7 +18,6 @@ Bienvenu dans Frame Code generator :
     try{
         mkdir($bundle_folder);
         mkdir($bundle_folder.'/controller');
-        mkdir($bundle_folder.'/model');
         mkdir($bundle_folder.'/view');
         if(file_exists("controller.php")){
             $fichier_controllleur = $bundle_folder."/controller/ControlleurDefault.php";
@@ -28,7 +27,7 @@ Bienvenu dans Frame Code generator :
                     . "\n"
                     . "use core\FrameController as FController;\n\n"
                     . "class ControlleurDefault extends  FController\FrameController {\n"
-                    . "\tpublic function index(){\n"
+                    . "\tpublic function indexAction(){\n"
                     . "\techo 'Je suis le controlleur par defaut  de ".$bundle_name." et je fonctionne';\n"
                     . "  }\n"
                     . "}";

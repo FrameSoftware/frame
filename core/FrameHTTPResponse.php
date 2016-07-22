@@ -72,7 +72,6 @@ class FrameHTTPResponse {
     function setResponseMessage($responseMessage) {
         $this->responseMessage = $responseMessage;
     }
-
         
     function setBundleName($bundleName) {
         $this->bundleName = $bundleName;
@@ -97,8 +96,6 @@ class FrameHTTPResponse {
     function setMethodeName($methodeName) {
         $this->methodeName = $methodeName;
     }
-
-    
 
     function setArgs($args) {
         $this->args = $args;
