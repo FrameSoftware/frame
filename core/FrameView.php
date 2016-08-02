@@ -3,8 +3,10 @@
   namespace core\FrameView;
 
   require_once 'FrameException.php';
+  require_once 'FrameLogger.php';
   
   use core\FrameException as FException;
+  use core\FrameLogger as FLog;
   
   
   
@@ -17,12 +19,15 @@
   class FrameView
   {
       
+    private $log;
     private $file;
 
     public function __construct()
     {
       # code...
-      $file = './src/layout.php';
+      $this->file = './src/layout.php';
+      
+      $this->log = new FLog\FrameLogger();
     }
     
     /**
@@ -32,7 +37,8 @@
      *@param string $page hold the name of the page to display this page should be placed to Bundle{name}/View/{name_of_page.php} whitout .php
      *@param string $title hold the title of the page
      */
-    public function rend($data = array(),$page = NULL ,$title = NULL){
+    public function rend($data = array(),$page = NULL ,$title = NULL,$header = false){
+        
         if($page!= NULL){//if the page has been set by the user
             $this->file = '../view/'.$page.'.php';
             if(file_exists($this->file)){//if the file is set
@@ -45,7 +51,19 @@
                 $this->generateErrorFrameException($ex);
             } 
         }
-        require_once $this->file;
+        
+        if(file_exists($this->file)){
+            require_once $this->file;
+            
+        }else{
+            $this->log->log('ERROR',$this->file);
+            $ex =  new FException\FrameException(array(
+                    'message'=>'Impossible de charge la fichier layout',
+                    'code'=>405
+                    ));
+                $this->generateErrorFrameException($ex);
+        }
+        
     }
     
     public function generateErrorFrameException(FException\FrameException $ex){
@@ -68,6 +86,27 @@
         $ligne = $ex->getLine();
         $severite = 'indefinie';
         $dump = $ex->getTrace();
+//        echo '<pre>';
+//        var_dump($ex->getTrace());
+//        echo '</pre>--------------------';
+//        foreach ($ex->getTrace() as $trace){
+//            foreach ($trace as $t){
+//                
+//                echo '<pre>';
+//                var_dump(array_keys($trace));
+//                echo '[fichier]'.$trace['file'].' <br/>';
+//                echo '[ligne]'.$trace['line'].' <br/>';
+//                echo '[fonction]'.$trace['function'].' <br/>';
+//                echo '[class]'.$trace['class'].' <br/>';
+//                echo '[type]'.$trace['type'].' <br/>';
+//                var_dump(array_keys($trace['args']));
+//                echo '<------------>';
+//                foreach ($trace['args'] as $arg):
+//                    echo $arg;
+//                endforeach;
+//                echo '</pre>----';
+//            }
+//        }
         $trace = $ex->getTraceAsString();
         require_once 'core/ViewEngine/error.php';
     }

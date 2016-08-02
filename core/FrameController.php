@@ -2,6 +2,7 @@
 
   namespace core\FrameController;
   
+  //require_once '/definition.php';
   require_once 'FrameView.php';
   require_once 'FrameException.php';
   require_once 'FrameLogger.php';
@@ -11,6 +12,7 @@
   use core\FrameException as FException;
   use core\FrameCache as FCache;
   use core\FrameLogger as FLog;
+  //use core\module\Form as Form;
 
   /**
    * Cette classe est le controlleur par defaut de tout le framework il contient
@@ -37,6 +39,11 @@
         $this->view =  new FView\FrameView();
         $this->cache = new FCache\FrameCache();
         $this->logger = new FLog\FrameLogger();
+        
+        define('CSS', 'assets/css/');
+        define('JS', 'assets/JS/');
+        define('IMG', 'assets/img/');
+        define('ASSETS','/assets/');
     }
     
     public function loging(){
@@ -59,14 +66,14 @@
         $module = ucfirst(strtolower($module));
         $module_class = ucfirst(strtolower($module));
         $this->module = './core/module/'.$module.'.php';
+        //echo $module_class;
         if(file_exists($this->module)){
-            require_once $this->module;
-            $m = new $module_class;
-            echo 'f';
-            return new $module_class;
+            $a = require_once $this->module;
+            $m = new $module_class();
+            return $m;
         }else{
             $ex =  new FException\FrameException(array(
-                'message'=>'Unable to find the manager specified',
+                'message'=>'Unable to find the specified module',
                 'status'=>404
             ));
             $this->view->generateErrorFrameException($ex);
@@ -79,13 +86,14 @@
      */
     public function loadManager($manager){
         $manager = ucfirst(strtolower($manager));
-        $this->manager = './src/Manager/'.$manager.'.php';
+        $this->manager = './src/Manager/'.$manager.'Manager.php';
         if(file_exists($this->manager)){
             require_once $this->manager;
-            return new $this->manager;
+            $manager_class = $manager.'Manager';
+            return new $manager_class();
         }else{
             $ex =  new FException\FrameException(array(
-                'message'=>'Unable to find the manager specified',
+                'message'=>'Unable to find the specified manager',
                 'status'=>404
             ));
             $this->view->generateErrorFrameException($ex);
@@ -98,17 +106,37 @@
      */
     public function loadEntity($entity ){
         $entity = ucfirst(strtolower($entity));
-        $this->entity = './src/Entity/'.$entity.'.php';
+        $this->entity = './src/Entity/'.$entity.'Entity.php';
         if(file_exists($this->entity)){
             require_once $this->entity;
-            return new $this->entity;
+            $entity_class = $entity.'Entity';
+            return new $entity_class();
         }else{
             $ex =  new FException\FrameException(array(
-                'message'=>'Unable to find the manager specified',
+                'message'=>'Unable to find the specified entity',
                 'status'=>404
             ));
             $this->view->generateErrorFrameException($ex);
         }
+    }
+    
+    public function ressources($bundle , $res ,$data = NULL){
+        $path = './src/Bundle'. ucfirst(strtolower($bundle)) .'/view/'.$res.'.php';
+        if(file_exists($path)){
+            require_once $path;
+        }else{
+            $ex =  new FException\FrameException(array(
+                'message'=>'Impossible de trouver la ressources ['.$res.'] du bundle ['. $bundle.']',
+                'status'=>404
+            ));
+            $this->view->generateErrorFrameException($ex);
+        }
+    }
+    
+    public function includ($bundle , $res , $data =NULL){
+        ob_start();
+        $this->ressources($bundle, $res,$data);
+        return ob_get_clean();
     }
     
     abstract public function indexAction();

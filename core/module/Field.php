@@ -1,6 +1,6 @@
 <?php
 
-namespace core\module\field;
+//namespace core\module\Field;
 /**
  * Cette classe represente les champs d'un formulaire
  *
@@ -17,6 +17,15 @@ class Field {
     public function __construct($param = array()) {
         $this->hydrate($param);
     }
+    
+    public function clean(){
+        $this->setId('');
+        $this->setLabel('');
+        $this->setName('');
+        $this->setType('');
+        $this->setClass('');
+    }
+    
     function getType() {
         return $this->type;
     }
@@ -25,30 +34,30 @@ class Field {
         $this->type = $type;
     }
 
-        public function hydrate($param = array()){
-        if(isset($param['name'])){
-            $this->setName($param['name']);
-        }
-        
-        if(isset($param['type'])){
-            $this->setType($param['type']);
-        }
-        
-        if(isset($param['value'])){
-            $this->setValue($param['value']);
-        }
-        
-        if(isset($param['id'])){
-            $this->setId($param['id']);
-        }
-        
-        if(isset($param['class'])){
-            $this->setClass($param['class']);
-        }
-        
-        if(isset($param['label'])){
-            $this->setLabel($param['label']);
-        }
+    public function hydrate($param = array()){
+       if(isset($param['name'])){
+           $this->setName($param['name']);
+       }
+       
+       if(isset($param['type'])){
+           $this->setType($param['type']);
+       }
+       
+       if(isset($param['value'])){
+           $this->setValue($param['value']);
+       }
+       
+       if(isset($param['id'])){
+           $this->setId($param['id']);
+       }
+       
+       if(isset($param['class'])){
+           $this->setClass($param['class']);
+       }
+       
+       if(isset($param['label'])){
+           $this->setLabel($param['label']);
+       }
     }
     
     function getName() {
