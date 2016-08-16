@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    This file contain the rules for the Acces Control Level whith route
+    
+    The 'route' node specifie the controller , the method , the bundle and the auth specifie
+    if the user have to be authentificate to acces this route
+-->
+
+<control>
+    <level access='visitor'>
+        <route bundle='BundleDefault' controller='ControlleurDefault' method='indexAction' auth='false' />
+        <route bundle='BundleDefault' controller='ControlleurDashboeard' method='idexAction' auth='false' />
+    </level>
+</control>
