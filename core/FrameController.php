@@ -16,7 +16,7 @@
 
   /**
    * Cette classe est le controlleur par defaut de tout le framework il contient
-   * toutes les methodes que devront implementer les autres controlleur
+   * toutes les methodes que devront implementer les autres controlleur. 
    *@author simoadonis@gmail.com
    */
   abstract class FrameController
