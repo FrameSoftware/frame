@@ -17,6 +17,7 @@
   /**
    * Cette classe est le controlleur par defaut de tout le framework il contient
    * toutes les methodes que devront implementer les autres controlleur
+<<<<<<< HEAD
    * 
    * Now i will introduce the auto_loading concept in the controlleur it means that the developper will
    * have to write the list of module he want to load automatically by the controller. 
@@ -46,6 +47,8 @@
    * 
    * the second way todo spend time , lines of code and memory to works
    * 
+=======
+>>>>>>> c52265a58bb0595547b6a0fb64b3d5c34621b96d
    *@author simoadonis@gmail.com
    */
   abstract class FrameController
@@ -60,6 +63,7 @@
       private $manager;
       private $manager_name;
       protected $logger;
+      
       protected $mod_autoloaded= false;
       protected $man_autoloaded= false;
       protected $class_autoloaded= false;
@@ -92,6 +96,7 @@
        * @var type array
        */
       protected $manager_loaded = array();
+
 
 
       public function __construct($argument = null)
@@ -159,6 +164,12 @@
             $this->class_autoloaded = true;
         }
         
+
+
+        define('CSS', 'assets/css/');
+        define('JS', 'assets/JS/');
+        define('IMG','assets/img/');
+        define('ASSETS','assets/');
     }
     
     public function loging(){
@@ -234,7 +245,7 @@
             $this->view->generateErrorFrameException($ex);
         }
     }
-    
+        
     /**
      * This function load a class stored at ./src/Class/{$class}.Class.php file
      * and return a instance of it
@@ -353,7 +364,7 @@
         $this->ressources($bundle, $res,$data);
         return ob_get_clean();
     }
-    
+
     abstract public function indexAction();
   }
  

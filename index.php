@@ -13,3 +13,4 @@ define('APP', 'localhost/frame');
 //$router->route_url();
     $kernel = new FKernel\FrameKernel();
     $kernel->launch_kernel();
+

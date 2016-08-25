@@ -13,4 +13,5 @@ class ControlleurDefault extends  FController\FrameController {
     public function indexAction(){
 	echo 'Je suis le controlleur par defaut  de BundleDefault et je fonctionne';
     }
+
 }

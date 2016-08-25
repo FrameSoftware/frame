@@ -27,6 +27,7 @@ Bienvenu dans Frame Code generator :
                     . "\n"
                     . "use core\FrameController as FController;\n\n"
                     . "class ControlleurDefault extends  FController\FrameController {\n"
+
                     . "\tpublic function __construct(\$arg = null){\n"
                     . "\t\tparent::__construct(\$arg);"
                     . "}"

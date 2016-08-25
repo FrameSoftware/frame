@@ -5,6 +5,8 @@ RewriteEngine on
 RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?$ index.php?b=$1&c=$2&m=$3 [NC]
 
 #deuxieme regle de base Bundle/Controlleur/Methode/id ce modele sert dans le cas ou vous avez un id a gerer
+
 RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9]*)?/?([a-zA-Z0-9]*)?/?$ index.php?b=$1&c=$2&m=$3&id=$4 [NC]
+
 
 

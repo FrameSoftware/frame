@@ -51,7 +51,7 @@
                 $this->generateErrorFrameException($ex);
             } 
         }
-        
+
         if(file_exists($this->file)){
             require_once $this->file;
             
@@ -76,6 +76,7 @@
         $dump = ($ex->getTrace());
         $trace = $ex->getTraceAsString();
         require_once 'core/ViewEngine/error.php';
+
         die();
     }
     
@@ -122,7 +123,8 @@
         $dump = $ex->getTrace();
         $trace = $ex->getTraceAsString();
         require_once 'core/ViewEngine/error.php';
-        die();
+
+        die();                                                                                                                                           
     }
     
     public function generateErrorPDOExceptio(\PDOException $ex){
@@ -134,7 +136,7 @@
         $dump = $ex->getTrace();
         $trace = $ex->getTraceAsString();
         require_once 'core/ViewEngine/error.php';
-        die();
+        die(); 
     }
   }
  ?>

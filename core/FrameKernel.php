@@ -45,6 +45,7 @@ class FrameKernel {
      */
     public function launch_kernel(){
         try {
+
             // Fusion des paramètres GET et POST de la requête
             $requete = new FHTTPQuery\FrameHTTPQuery(array_merge($_GET, $_POST));
             $this->http_query = $requete;
@@ -53,20 +54,23 @@ class FrameKernel {
             
             $router = new FRouter\FrameRouter();
             $response =  $router->route_url();
-            $this->http_response = $response;//
+            $this->http_response = $response;
             
             require_once $response->getControllerPath();
             //reflexivité
             $reflect_controlleur = new \ReflectionMethod($response->getControllerClass(),$response->getMethodeName());
+
             
             $controlleur =  $response->getControllerClass();
             $controlleur = new $controlleur;//on instancie le controlleur
             //$this->control_user();
             
             if($reflect_controlleur->getParameters()){//si la methode prend des parametres on lance avec GET
+
                  $reflect_controlleur->invoke($controlleur, $_GET);
             }else{//sinon
                  $reflect_controlleur->invoke($controlleur);
+
             }
           }catch(FException\FrameException $ex) {
            //On doit appeler le moteur de vue pour afficher le message d'erreur ici
