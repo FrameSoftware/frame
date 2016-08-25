@@ -163,13 +163,7 @@
             }
             $this->class_autoloaded = true;
         }
-        
-
-
-        define('CSS', 'assets/css/');
-        define('JS', 'assets/JS/');
-        define('IMG','assets/img/');
-        define('ASSETS','assets/');
+     
     }
     
     public function loging(){

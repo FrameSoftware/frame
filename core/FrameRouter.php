@@ -1,7 +1,5 @@
-
 <?php
-
-  namespace core\FrameRouter;
+namespace core\FrameRouter;
 
 //les inclusion ici
   require_once 'FrameException.php';
