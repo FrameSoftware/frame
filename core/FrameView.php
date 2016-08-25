@@ -76,6 +76,7 @@
         $dump = ($ex->getTrace());
         $trace = $ex->getTraceAsString();
         require_once 'core/ViewEngine/error.php';
+        die();
     }
     
     public function generateErrorReflectionException(\ReflectionException $ex){
@@ -109,6 +110,7 @@
 //        }
         $trace = $ex->getTraceAsString();
         require_once 'core/ViewEngine/error.php';
+        die();
     }
     
     public function generateErrorException(\Exception $ex){
@@ -120,6 +122,7 @@
         $dump = $ex->getTrace();
         $trace = $ex->getTraceAsString();
         require_once 'core/ViewEngine/error.php';
+        die();
     }
     
     public function generateErrorPDOExceptio(\PDOException $ex){
@@ -131,6 +134,7 @@
         $dump = $ex->getTrace();
         $trace = $ex->getTraceAsString();
         require_once 'core/ViewEngine/error.php';
+        die();
     }
   }
  ?>
