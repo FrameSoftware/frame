@@ -152,7 +152,7 @@ function generate_setter($list_attr){
     
     ob_start();
     
-    echo "public function __construct(\$param){\n"
+    echo "public function __construct(\$param = NULL){\n"
             . "\t \$this->hydrate(\$param);\n"
             . "}\n\n";
     $bloc_construct = ob_get_clean();
