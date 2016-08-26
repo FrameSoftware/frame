@@ -17,7 +17,6 @@
   /**
    * Cette classe est le controlleur par defaut de tout le framework il contient
    * toutes les methodes que devront implementer les autres controlleur
-<<<<<<< HEAD
    * 
    * Now i will introduce the auto_loading concept in the controlleur it means that the developper will
    * have to write the list of module he want to load automatically by the controller. 
@@ -47,8 +46,6 @@
    * 
    * the second way todo spend time , lines of code and memory to works
    * 
-=======
->>>>>>> c52265a58bb0595547b6a0fb64b3d5c34621b96d
    *@author simoadonis@gmail.com
    */
   abstract class FrameController
@@ -133,6 +130,7 @@
         if($list_manager != NULL){
             empty($this->manager_loaded);
             foreach ($list_manager as $manager){
+                $manager = ucfirst(strtolower($manager));
                 $this->manager_loaded[$manager] = $this->loadManager($manager);
             }
             $this->man_autoloaded = true;
@@ -141,15 +139,18 @@
         if($list_entity != NULL){
             empty($this->entity_loaded);
             foreach ($list_entity as $entity){
+                $entity = ucfirst(strtolower($entity));
+                
                 $this->entity_loaded[$entity] = $this->loadEntity($entity);
             }
-            $this->entity_loaded = true;
+            $this->entity_autoloaded = true;
         }
         
         if($list_module != NULL){
             
             empty($this->module_loaded);
             foreach ($list_module as $mods){
+                $mods = ucfirst(strtolower($mods));
                 $this->module_loaded[$mods] = $this->loadModule($mods);
                 
             }
@@ -159,17 +160,12 @@
         if($list_class != NULL){
             empty($this->class_loaded);
             foreach ($list_class as $class){
+                $class = ucfirst(strtolower($class));
                 $this->class_loaded[$class] = $this->loadClass($class);
             }
             $this->class_autoloaded = true;
         }
-        
-
-
-        define('CSS', 'assets/css/');
-        define('JS', 'assets/JS/');
-        define('IMG','assets/img/');
-        define('ASSETS','assets/');
+     
     }
     
     public function loging(){
@@ -232,6 +228,7 @@
      */
     public function loadEntity($entity ){
         $entity = ucfirst(strtolower($entity));
+        
         $this->entity = './src/Entity/'.$entity.'Entity.php';
         if(file_exists($this->entity)){
             require_once $this->entity;
@@ -277,7 +274,10 @@
      */
     public function _module($name){
         //return (isset($this->module_loaded[$name]) ? $this->module_loaded[$name] : NULL );
+        $name = ucfirst(strtolower($name));
+        
         if(isset($this->module_loaded[$name])){
+            //echo $this->module_loaded[$name];
             return $this->module_loaded[$name];
         }else{
             $ex =  new FException\FrameException(array(
@@ -296,6 +296,7 @@
      */
     public function _manager($name){
         //return (isset($this->manager_loaded[$name]) ? $this->module_loaded[$name] : NULL );
+        $name = ucfirst(strtolower($name));
         if(isset($this->manager_loaded[$name])){
             return $this->manager_loaded[$name];
         }else{
@@ -315,6 +316,7 @@
      */
     public function _class($name){
         //return (isset($this->class_loaded[$name]) ? $this->module_loaded[$name] : NULL );
+        $name = ucfirst(strtolower($name));
         if(isset($this->class_loaded[$name])){
             return $this->class_loaded[$name];
         }else{
@@ -334,6 +336,7 @@
      */
     public function _entity($name){
         //return (isset($this->entity_loaded[$name]) ? $this->module_loaded[$name] : NULL );
+        $name = ucfirst(strtolower($name));
         if(isset($this->entity_loaded[$name])){
             return $this->entity_loaded[$name];
         }else{
@@ -363,6 +366,40 @@
         ob_start();
         $this->ressources($bundle, $res,$data);
         return ob_get_clean();
+    }
+    
+    /**
+     * This methode will be responsible of the redirection in the application
+     * It has 3 parameters
+     * 
+     * @param string $bundle
+     * @param string $controller
+     * @param string $method = null
+     * @param string $args Hols and array list of argument passed to a method during the redirection request
+     * 
+     * the last parameter has to be use like this :
+     * 
+     * array(
+     *  'parameter' => 'value'
+     * )
+     * 
+     */
+    public function redirect($bundle, $controller, $method = NULL , $args = NULL){
+        $addr = 'location:http://'.APP.'/'.$bundle.'/'.$controller;
+        if($method != NULL){
+            $addr .= '/'.$method;
+        }
+        
+        if($args!= NULL){
+            $a = "";
+            //foreach ($args as $arg->$val){
+              //  $a =
+            //}
+            $addr .= '/?'.$args;
+        }
+        
+        //start the redirection here
+        header($addr);
     }
 
     abstract public function indexAction();

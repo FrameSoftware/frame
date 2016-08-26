@@ -10,7 +10,8 @@ use core\FrameException as FException;
 
 
 /**
- * Cette classe va offrire les methode necessaires pour l'acces et l'interrogation des base de donnée
+ * This class will offer an interface to manage databases just as and simple 
+ * ORM
  *
  * @author SIMO
  */
@@ -48,24 +49,19 @@ class FrameDataBase {
     public function getDB(){
         return $this->db;
     }
-    public function execute_query($query){
-        try{
-            return $this->getDB()->exec($query);
-        }  catch (\PDOException $ex){
-            $view = new FView\FrameView();
-            $view->generateErrorPDOExceptio($ex);
-        }
-    }
     
-    public function execute_prepare_query($sql,$para = NULL){
+    /*
+     * This method is user to execute an sql statement. if it is an prepared query
+     * the $query parameter will store the sql query and the $param will contain an
+     * array which represent the value who will be use to bind the prepared query
+     */
+    public function execute_query($query,$param =null){
         try{
-            if($para != NULL){
-                $query = $this->getDB()->prepare($sql);
-                return $query->execute($para);
-            }else{
-                return $query = $this->getDB()->exec($sql);
+            if($param == null){
+                return $this->getDB()->exec($query);
             }
-        }  catch (\Exception $ex){//exception non reconnu
+            return $this->getDB()->query($query)->execute($param);
+        }catch (\Exception $ex){//exception non reconnu
             $view = new FView\FrameView();
             $view->generateErrorException($ex);
         }  catch (FException\FrameException $ex){//exception Frame
@@ -74,10 +70,40 @@ class FrameDataBase {
         }  catch (\PDOException $pdo_ex){//exception PDO
             $view = new FView\FrameView();
             $view->generateErrorPDOExceptio($ex);
-        }  
+        }
     }
     
-    private function select_query($table){
+    /**
+     * This methode will be use to select all data field in a table
+     * 
+     * @param type $table_name
+     * @return type
+     */
+    public function findAll($table_name){
+        return $this->execute_query('select * from '.$table_name)->fetchAll();
+    }
+    
+    public function select_query($fields , $from , $where = NULL , $order_by = NULL, $limit = NULL , $group_by = NULL ){
+        
+    }
+    
+    private function _from($table){
+        
+    }
+    
+    private function _order_by($order){
+        
+    }
+    
+    private function _limit($lim_start, $lim_end){
+        
+    }
+    
+    private function _where($condition){
+        
+    }
+    
+    private function _group_by($group_name){
         
     }
 }
