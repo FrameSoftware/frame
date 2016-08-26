@@ -41,8 +41,8 @@ class FrameRouter
     public function __construct() {
         //a pour role de charge la configuration 
         try {
-            if(file_exists('core/routerConfig.ini')){
-                $config = parse_ini_file('routerConfig.ini');
+            if(file_exists('./src/config/routerConfig.ini')){
+                $config = parse_ini_file('./src/config/routerConfig.ini');
                 $this->default_controlleur = ucfirst(strtolower($config['default_controller']));
                 $this->default_method = $config['default_method'];
                 $this->bundle_default = $config['default_bundle'];
