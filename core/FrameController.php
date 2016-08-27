@@ -313,23 +313,21 @@
         }
     
         /**
-         * Return an instance of a manager which has been autoloaded
+         * Return an instance of a manager which has been autoloaded 
+         * if the manager is not loaded it will load it.
          *
          * @param type $name
          * @return type
          */
         public function _manager($name)
         {
+
             //return (isset($this->manager_loaded[$name]) ? $this->module_loaded[$name] : NULL );
             $name = ucfirst(strtolower($name));
             if (isset($this->manager_loaded[$name])) {
                 return $this->manager_loaded[$name];
-            } else {
-                $ex = new Exception(array(
-                    'message' => 'Instance of  manager ' . $name . '. not found  Hint:  may it has not declared to be  autoloaded',
-                    'status' => 404
-                ));
-                $this->view->generateErrorFrameException($ex);
+            } else{
+                return ($this->manager_loaded[$name] = $this->loadManager($name));
             }
         }
     
@@ -349,7 +347,7 @@
         }
     
         /**
-         * Return an instance of a class which has been autoloaded
+         * Return an instance of a class which has been autoloaded or it will load it (if it is not in the autoload file)
          *
          * @param type $name
          * @return type
@@ -360,13 +358,9 @@
             $name = ucfirst(strtolower($name));
             if (isset($this->class_loaded[$name])) {
                 return $this->class_loaded[$name];
-            } else {
-                $ex = new Exception(array(
-                    'message' => 'Instance of class ' . $name . '. not found  Hint:  may it has not declared to be  autoloaded',
-                    'status' => 404
-                ));
-                $this->view->generateErrorFrameException($ex);
-            }
+            } else{
+                return ($this->class_loaded[$name] = $this->loadClass($name));
+            } 
         }
     
         public function _set_class($name, $class)
@@ -385,7 +379,7 @@
         }
     
         /**
-         * Return an instance of a entity which has been autoloaded
+         * Return an instance of a entity which has been autoloaded [same as the other]
          *
          * @param type $name
          * @return type
@@ -396,12 +390,8 @@
             $name = ucfirst(strtolower($name));
             if (isset($this->entity_loaded[$name])) {
                 return $this->entity_loaded[$name];
-            } else {
-                $ex = new Exception(array(
-                    'message' => 'Instance of entity ' . $name . '. not found  Hint:  may it has not declared to be  autoloaded',
-                    'status' => 404
-                ));
-                $this->view->generateErrorFrameException($ex);
+            }else{
+                return ($this->entity_loaded[$name] = $this->loadEntity($name));
             }
         }
     
