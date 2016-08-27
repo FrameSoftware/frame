@@ -3,10 +3,10 @@
   namespace core\FrameController;
   
   //require_once '/definition.php';
-  require_once 'FrameView.php';
-  require_once 'FrameException.php';
-  require_once 'FrameLogger.php';
-  require_once 'FrameCache.php';
+//  require_once 'FrameView.php';
+//  require_once 'FrameException.php';
+//  require_once 'FrameLogger.php';
+//  require_once 'FrameCache.php';
   
   use core\FrameView as FView;
   use core\FrameException as FException;

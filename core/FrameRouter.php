@@ -2,10 +2,10 @@
 namespace core\FrameRouter;
 
 //les inclusion ici
-  require_once 'FrameException.php';
-  require_once 'FrameHTTPQuery.php';
-  require_once 'FrameHTTPResponse.php';
-  require_once 'FrameView.php';
+//  require_once 'FrameException.php';
+//  require_once 'FrameHTTPQuery.php';
+//  require_once 'FrameHTTPResponse.php';
+//  require_once 'FrameView.php';
 
   //les use unregister_tick_function
   use core\FrameException as FException;
@@ -87,7 +87,7 @@ class FrameRouter
         }catch(FException\FrameException $ex) {
          //On doit appeler le moteur de vue pour afficher le message d'erreur ici
             throw $ex;
-        }catch(\ReflectionException $rex){
+        }catch(\ReflectionException $ex){
             throw $ex;
         }
     }

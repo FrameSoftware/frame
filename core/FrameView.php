@@ -2,8 +2,8 @@
 
   namespace core\FrameView;
 
-  require_once 'FrameException.php';
-  require_once 'FrameLogger.php';
+//  require_once 'FrameException.php';
+//  require_once 'FrameLogger.php';
   
   use core\FrameException as FException;
   use core\FrameLogger as FLog;

@@ -2,8 +2,8 @@
 
 namespace core\FrameDataBase;
 
-require_once 'FrameView.php';
-require_once 'FrameException.php';
+//require_once 'FrameView.php';
+//require_once 'FrameException.php';
 
 use core\FrameView as FView;
 use core\FrameException as FException;

@@ -2,7 +2,7 @@
 
 namespace core\FrameHTTPResponse;
 
-require_once 'FrameException.php';
+//require_once 'FrameException.php';
 
 use core\FrameException as FException;
 
