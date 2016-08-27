@@ -184,15 +184,18 @@
      * 
      * @param string $module contain the name of the module to load which is located to core/module/
      */
-    public function loadModule($module){
+    public function loadModule($module, $data = NULL){
         $module = ucfirst(strtolower($module));
         $module_class = ucfirst(strtolower($module));
         $this->module = './core/module/'.$module.'.php';
         //echo $module_class;
         if(file_exists($this->module)){
             $a = require_once $this->module;
-            $m = new $module_class();
-            return $m;
+            if($data != NULL){
+                return new $module_class($data);
+            }
+            return new $module_class();
+            
         }else{
             $ex =  new FException\FrameException(array(
                 'message'=>'Unable to find the specified module',
@@ -206,12 +209,15 @@
      * Return a class of manager which id passed as argument
      * @param type $manager
      */
-    public function loadManager($manager){
+    public function loadManager($manager, $data = NULL){
         $manager = ucfirst(strtolower($manager));
         $this->manager = './src/Manager/'.$manager.'Manager.php';
         if(file_exists($this->manager)){
             require_once $this->manager;
             $manager_class = $manager.'Manager';
+            if($data != NULL){
+                return new $manager_class($data);
+            }
             return new $manager_class();
         }else{
             $ex =  new FException\FrameException(array(
@@ -226,14 +232,19 @@
      * Return the class which is passed as argument
      * @param type $entity
      */
-    public function loadEntity($entity ){
+    public function loadEntity($entity , $data = NULL){
         $entity = ucfirst(strtolower($entity));
         
         $this->entity = './src/Entity/'.$entity.'Entity.php';
         if(file_exists($this->entity)){
             require_once $this->entity;
             $entity_class = $entity.'Entity';
-            return new $entity_class();
+            if($data == NULL){
+                return new $entity_class();
+            }else{
+                return new $entity_class($data);
+            }
+            
         }else{
             $ex =  new FException\FrameException(array(
                 'message'=>'Unable to find the specified entity',
@@ -250,12 +261,15 @@
      * @param string $class
      * @return \core\FrameController\class_name
      */
-    public function loadClass($class){
+    public function loadClass($class, $data = NULL){
         $class = ucfirst(strtolower($class));
         $class_name = $class.'Class';
         $class_path = './src/Class/'.$class.'Class.php';
         if(file_exists($class_path)){
             require_once $class_path;
+            if($data != NULL){
+                return new $class_name($data);
+            }
             return new $class_name();
         }else{
             $ex =  new FException\FrameException(array(
@@ -265,6 +279,8 @@
             $this->view->generateErrorFrameException($ex);
         }
     }
+    
+    
     
     /**
      * Return the instance of module which has been autoloaded
@@ -279,6 +295,22 @@
         if(isset($this->module_loaded[$name])){
             //echo $this->module_loaded[$name];
             return $this->module_loaded[$name];
+        }else{
+            $ex =  new FException\FrameException(array(
+                'message'=>'Instance of  module '.$name.'. not found  Hint:  may it has not declared to be  autoloaded',
+                'status'=>404
+            ));
+            $this->view->generateErrorFrameException($ex);
+        }
+    }
+    
+    public function _set_module($name,$module){
+        //return (isset($this->module_loaded[$name]) ? $this->module_loaded[$name] : NULL );
+        $name = ucfirst(strtolower($name));
+        
+        if(isset($this->module_loaded[$name])){
+            //echo $this->module_loaded[$name];
+            $this->module_loaded[$name] = $module;
         }else{
             $ex =  new FException\FrameException(array(
                 'message'=>'Instance of  module '.$name.'. not found  Hint:  may it has not declared to be  autoloaded',
@@ -308,6 +340,20 @@
         }
     }
     
+    public function _set_manager($name,$menager){
+        //return (isset($this->manager_loaded[$name]) ? $this->module_loaded[$name] : NULL );
+        $name = ucfirst(strtolower($name));
+        if(isset($this->manager_loaded[$name])){
+            $this->manager_loaded[$name] = $menager;
+        }else{
+            $ex =  new FException\FrameException(array(
+                'message'=>'Instance of  manager '.$name.'. not found  Hint:  may it has not declared to be  autoloaded',
+                'status'=>404
+            ));
+            $this->view->generateErrorFrameException($ex);
+        }
+    }
+    
     /**
      * Return an instance of a class which has been autoloaded
      * 
@@ -328,6 +374,20 @@
         }
     }
     
+    public function _set_class($name,$class){
+        $name = ucfirst(strtolower($name));
+        if(isset($this->class_loaded[$name])){
+            
+            $this->class_loaded[$name] = $class;
+        }else{
+            $ex =  new FException\FrameException(array(
+                'message'=>'Instance of class '.$name.'. not found  Hint:  may it has not declared to be  autoloaded',
+                'status'=>404
+            ));
+            $this->view->generateErrorFrameException($ex);
+        }
+    }
+    
     /**
      * Return an instance of a entity which has been autoloaded
      * 
@@ -339,6 +399,19 @@
         $name = ucfirst(strtolower($name));
         if(isset($this->entity_loaded[$name])){
             return $this->entity_loaded[$name];
+        }else{
+            $ex =  new FException\FrameException(array(
+                'message'=>'Instance of entity '.$name.'. not found  Hint:  may it has not declared to be  autoloaded',
+                'status'=>404
+            ));
+            $this->view->generateErrorFrameException($ex);
+        }
+    }
+    
+    public function _set_entity($name,$entity){
+        $name = ucfirst(strtolower($name));
+        if(isset($this->entity_loaded[$name])){
+            $this->entity_loaded[$name] = $entity;
         }else{
             $ex =  new FException\FrameException(array(
                 'message'=>'Instance of entity '.$name.'. not found  Hint:  may it has not declared to be  autoloaded',

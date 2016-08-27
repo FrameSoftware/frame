@@ -13,14 +13,14 @@
  * This table wil containe the list of manager which will be load automatically
  */
 $autoload['manager'] = array(
-    
+    'utilisateur'
 );
 
 /**
  * This table will contain the list of entity which will be load automatcally
  */
 $autoload['entity'] = array(
-    'metting'
+    'utilisateur'
 );
 
 /**

@@ -52,6 +52,7 @@
             } 
         }
 
+        require_once './core/ViewEngine/function.php';
         if(file_exists($this->file)){
             require_once $this->file;
             
@@ -64,6 +65,22 @@
                 $this->generateErrorFrameException($ex);
         }
         
+    }
+    
+    public function render($data = array(),$page = NULL ,$title = NULL,$header = false){
+        if($page == NULL){
+            $page = 'layout';
+        }
+        $this->file = './src/'.$page.'.php';
+        if(!file_exists($this->file)){
+            $ex =  new FException\FrameException(array(
+                    'message'=>'Impossible to find the page '.$this->file,
+                    'code'=>404
+                    ));
+                $this->generateErrorFrameException($ex);
+        } 
+        require_once './core/ViewEngine/function.php';
+        require_once $this->file;
     }
     
     public function generateErrorFrameException(FException\FrameException $ex){
