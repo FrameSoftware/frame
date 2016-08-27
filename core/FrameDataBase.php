@@ -21,13 +21,14 @@ class FrameDataBase {
     private $pass;
     private $host;
     private $port;
-    private $dataBase;
+    private $sgbd;
     private $db_name;
     
     public function __construct() {
         $this->init_db();
-        $dsn = $this->dataBase.':host='.  $this->host.';dbname='.  $this->db_name;
-        $this->db = new \PDO($dsn,  $this->user,  $this->pass,array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+        $dsn = $this->sgbd.':host='.  $this->host.';dbname='.$this->dataBase;
+        
+        $this->db = new \PDO($dsn,  $this->user,  $this->pass,array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
     }
     
     public function init_db(){
@@ -43,7 +44,8 @@ class FrameDataBase {
         $this->pass = $db_ini_file['pass'];
         $this->host = $db_ini_file['host'];
         $this->port = $db_ini_file['port'];
-        $this->dataBase = $db_ini_file['sgbd'];
+        $this->dataBase = $db_ini_file['db_name'];
+        $this->sgbd = $db_ini_file['sgbd'];
     }
     
     public function getDB(){
@@ -60,7 +62,8 @@ class FrameDataBase {
             if($param == null){
                 return $this->getDB()->exec($query);
             }
-            return $this->getDB()->query($query)->execute($param);
+            $result = $this->getDB()->prepare($query);
+            return $result->execute($param);
         }catch (\Exception $ex){//exception non reconnu
             $view = new FView\FrameView();
             $view->generateErrorException($ex);

@@ -68,7 +68,7 @@ function generate_setter($list_attr){
     //starting generate the code of the entity attributes
     ob_start();
     foreach ($entity_attr_list as $attr):
-        $attr = ucfirst(strtolower($attr));
+        $attr = strtolower($attr);
         echo "protected \$$attr; \n";
     endforeach;
     echo "\n";
@@ -96,9 +96,10 @@ function generate_setter($list_attr){
     print('Generating hydrate method body (starting)\n');
     ob_start();
     foreach ($entity_attr_list as $attr):
-        $attr = ucfirst(strtolower($attr));
+        $attr = strtolower($attr);
+        $attr_camel = ucfirst($attr);
         echo "\tif(isset(\$param['$attr'])){\n"
-            ."\t\t\$this->set$attr(\$param['$attr']);\n"
+            ."\t\t\$this->set$attr_camel(\$param['$attr']);\n"
             ."\t}\n";
     endforeach;
     $body_func_code = ob_get_clean();
