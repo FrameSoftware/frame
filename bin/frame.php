@@ -23,13 +23,11 @@ Bienvenu dans Frame Code generator :
             $fichier_controllleur = $bundle_folder."/controller/ControlleurDefault.php";
             $controlleru_file = fopen($fichier_controllleur, "a");
             $code_controlleur ="<?php\n"
-                    . "include_once './core/FrameController.php';\n"
                     . "\n"
-                    . "use core\FrameController as FController;\n\n"
-                    . "class ControlleurDefault extends  FController\FrameController {\n"
+                    . "class ControlleurDefault extends \Frame\Core\Controller {\n"
 
-                    . "\tpublic function __construct(\$arg = null){\n"
-                    . "\t\tparent::__construct(\$arg);"
+                    . "\tpublic function __construct(\$arguments = null){\n"
+                    . "\t\tparent::__construct(\$arguments);"
                     . "}"
                     . "\tpublic function indexAction(){\n"
                     . "\techo 'Je suis le controlleur par defaut  de ".$bundle_name." et je fonctionne';\n"
