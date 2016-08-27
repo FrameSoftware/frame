@@ -11,7 +11,7 @@
     {
         public function postExist($name)
         {
-            if (array_key_exists($name, $_POST)) {
+            if (array_key_exists($name, $_POST) && $_POST[$name] != "") {
                 return true;
             } else {
                 return false;
@@ -20,7 +20,7 @@
 
         public function getExist($name)
         {
-            if (array_key_exists($name, $_GET)) {
+            if (array_key_exists($name, $_GET) && $_GET[$name]  != "") {
                 return true;
             } else {
                 return false;
