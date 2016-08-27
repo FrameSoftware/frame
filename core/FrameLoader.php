@@ -12,7 +12,9 @@
     // -------------------------
     // Loading user session
     // -------------------------
-    session_start();
+     session_start(); //don't have to place this instruction here because it is to the user to
+     //manager its session  as he want. And in new version i will add a SESSION module which will 
+     //be more secure thant php native session management system
 
     // -------------------------
     // Loading required files
