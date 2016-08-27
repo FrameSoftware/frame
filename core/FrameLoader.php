@@ -31,3 +31,20 @@
     require __DIR__ . '/FrameRedirection.php';
     require __DIR__ . '/FrameRouter.php';
     require __DIR__ . '/FrameView.php';
+
+    // -------------------------
+    // Loading user files
+    // -------------------------
+    if (file_exists(FRAME_CONFIG_PATH . '/require.php')) {
+        require FRAME_CONFIG_PATH . '/require.php';
+    }
+
+    try {
+        $kernel = new \Frame\core\FrameKernel();
+        $kernel->launch_kernel();
+    } catch (\Frame\Core\Exception $e) {
+        (new \Frame\Core\FrameView())->generateErrorFrameException($e);
+    } catch (\ReflectionException $e) {
+        (new \Frame\Core\FrameView())->generateErrorReflectionException($e);
+    }
+

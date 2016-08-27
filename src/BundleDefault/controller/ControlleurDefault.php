@@ -1,17 +1,16 @@
 <?php
 
-include_once './core/FrameController.php';
+    class ControlleurDefault extends \Frame\Core\Controller
+    {
 
-use core\FrameController as FController;
+        public function __construct($argument = null)
+        {
+            parent::__construct($argument);
+        }
 
-class ControlleurDefault extends  FController\FrameController {
-    
-    public function __construct($argument = null) {
-        parent::__construct($argument);
+        public function indexAction()
+        {
+            echo 'Je suis le controlleur par defaut  de BundleDefault et je fonctionne';
+        }
+
     }
-
-    public function indexAction(){
-	echo 'Je suis le controlleur par defaut  de BundleDefault et je fonctionne';
-    }
-
-}

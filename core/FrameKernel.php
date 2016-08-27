@@ -1,6 +1,6 @@
 <?php
 
-namespace core\FrameKernel;
+namespace Frame\Core;
 
 //require_once 'FrameRouter.php';
 //require_once 'FrameHTTPQuery.php';
@@ -8,20 +8,19 @@ namespace core\FrameKernel;
 //require_once 'FrameException.php';
 //require_once 'FrameView.php';
 
-use core\FrameException as FException;
-use core\FrameHTTPQuery as FHTTPQuery;
-use core\FrameHTTPResponse as FHTTPResponse;
-use core\FrameRouter as FRouter;
-use core\FrameView as FViewEngine;
-
-
+//use core\FrameHTTPQuery as FHTTPQuery;
+//use core\FrameHTTPResponse as FHTTPResponse;
+//use core\FrameException as FException;
+//use core\FrameRouter as FRouter;
+//use core\FrameView as FViewEngine;
 
 
 /**
  * Le kernel qui permet de gerer toutes les requete et les controls a tout les niveau
  */
-class FrameKernel {
-    
+class FrameKernel
+{
+
     private $current_exception;
     private $http_query;
     private $http_response;
@@ -33,9 +32,10 @@ class FrameKernel {
     private $method_list = array();
 
 
-    public function __construct() {
-        $this->http_query = new FHTTPQuery\FrameHTTPQuery(array_merge($_GET, $_POST));
-        $this->http_response = new FHTTPResponse\FrameHTTPResponse();
+    public function __construct()
+    {
+        $this->http_query = new FrameHTTPQuery();
+        $this->http_response = new FrameHTTPResponse();
     }
 
     /**
@@ -43,92 +43,78 @@ class FrameKernel {
      * elle a pour role d'effectuer le controle de l'url et des autres
      * information
      */
-    public function launch_kernel(){
-        try {
+    public function launch_kernel()
+    {
+        $router = new FrameRouter();
+        $response = $router->route_url();
+        $this->http_response = $response;
 
-            // Fusion des paramètres GET et POST de la requête
-            $requete = new FHTTPQuery\FrameHTTPQuery(array_merge($_GET, $_POST));
-            $this->http_query = $requete;
-            
-            $response = new FHTTPResponse\FrameHTTPResponse();
-            
-            $router = new FRouter\FrameRouter();
-            $response =  $router->route_url();
-            $this->http_response = $response;
-            
-            require_once $response->getControllerPath();
-            //reflexivité
-            $reflect_controlleur = new \ReflectionMethod($response->getControllerClass(),$response->getMethodeName());
+        require_once $response->getControllerPath();
+        //reflexivité
+        $reflect_controlleur = new \ReflectionMethod($response->getControllerClass(), $response->getMethodeName());
 
-            
-            $controlleur =  $response->getControllerClass();
-            $controlleur = new $controlleur;//on instancie le controlleur
-            //$this->control_user();
-            
-            if($reflect_controlleur->getParameters()){//si la methode prend des parametres on lance avec GET
 
-                 $reflect_controlleur->invoke($controlleur, $_GET);
-            }else{//sinon
-                 $reflect_controlleur->invoke($controlleur);
+        $controlleur = $response->getControllerClass();
+        $controlleur = new $controlleur;//on instancie le controlleur
+        //$this->control_user();
 
-            }
-          }catch(FException\FrameException $ex) {
-           //On doit appeler le moteur de vue pour afficher le message d'erreur ici
-            $view= new FViewEngine\FrameView();
-            $view->generateErrorFrameException($ex);
-          }catch(\ReflectionException $rex){
-              $view= new FViewEngine\FrameView();
-              $view->generateErrorReflectionException($rex);
-          }
+        if ($reflect_controlleur->getParameters()) {//si la methode prend des parametres on lance avec GET
+
+            $reflect_controlleur->invoke($controlleur, $_GET);
+        } else {//sinon
+            $reflect_controlleur->invoke($controlleur);
+
+        }
     }
-    
+
     /**
-     * This methode will be use to control the route which is take by and user throught and XML file 
-     * 
+     * This methode will be use to control the route which is take by and user throught and XML file
+     *
      * @param \core\FrameHTTPResponse\FrameHTTPResponse $response
      */
-    public function control_user() {
+    public function control_user()
+    {
         //session_start();
-        $addr = './src/config/acl_config.xml';
-        if($xml_rule = simplexml_load_file($addr)){
+        $addr = './src/Config/acl_config.xml';
+        if ($xml_rule = simplexml_load_file($addr)) {
             //on commence par cree  les tableau des requetes
-            
+
             //la liste des ACL
             foreach ($xml_rule->level as $lv):
                 $this->acl[] = $lv['access'];
                 //echo $xml_rule->level->route['bundle'];
             endforeach;//we has take all the access level which is defined
-            
-            if(!in_array($_SESSION['acl'], $this->acl)){//if the acl of user exist in the XML file
+
+            if (!in_array($_SESSION['acl'], $this->acl)) {//if the acl of user exist in the XML file
                 //prevoir le code pour annuler
             }
             $acll = $_SESSION['acl'];
-            
-            
+
+
             $bundle = $this->http_response->getBundleName();
-            echo $bundle.'<br/>';
+            echo $bundle . '<br/>';
             $controller = $this->http_response->getControllerClass();
-            echo $controller.'<br/>';
+            echo $controller . '<br/>';
             $methode = $this->http_response->getMethodeName();
-            echo $methode.'<br/>';
-            $user_route =  $this->http_response->getBundleName().$this->http_response->getControllerClass().$this->http_response->getMethodeName();
-            
+            echo $methode . '<br/>';
+            $user_route = $this->http_response->getBundleName() . $this->http_response->getControllerClass() . $this->http_response->getMethodeName();
+
             //on initialise toutes les liste par rapport a un ACL pour le control ulterieur
-            foreach ($xml_rule->level->route as $route): 
-                $this->bundle_list[]= $route['bundle'];
-                echo $route['bundle'].'<br/>';
+            foreach ($xml_rule->level->route as $route):
+                $this->bundle_list[] = $route['bundle'];
+                echo $route['bundle'] . '<br/>';
                 $this->controller_list[] = $route['controller'];
-                echo $route['controller'].'<br/>';
-                $this->method_list[]= $route['method'];
-                echo $route['method'].'<br/>';
-                
-                $rout_array[] =  $route['bundle'].$route['controller'].$route['method'];
+                echo $route['controller'] . '<br/>';
+                $this->method_list[] = $route['method'];
+                echo $route['method'] . '<br/>';
+
+                $rout_array[] = $route['bundle'] . $route['controller'] . $route['method'];
             endforeach;//we has take all the access level which is defined
             echo '-------------------------<br/>';
-            
+
             foreach ($rout_array as $r):
-                if($r == $user_route){
-                    
+                if ($r == $user_route) {
+
                 }
             endforeach;
 //            if(in_array($bundle, $this->bundle_list)){

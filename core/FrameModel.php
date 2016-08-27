@@ -1,6 +1,6 @@
 <?php
 
-  namespace core\FrameModel;
+namespace Frame\Core;
 
   /**
    * Cette classe est celle qui gere les acces a la base de donnée

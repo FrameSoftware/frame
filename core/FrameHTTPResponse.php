@@ -1,10 +1,10 @@
 <?php
 
-namespace core\FrameHTTPResponse;
+namespace Frame\Core;
 
 //require_once 'FrameException.php';
 
-use core\FrameException as FException;
+//use core\FrameException as FException;
 
 
 class FrameHTTPResponse {

@@ -1,5 +1,6 @@
 <?php
-namespace core\FrameLogger;
+
+namespace Frame\Core;
 
 /**
  * FrameLogger est chargé d'effectuer le loggin dans tout le framwork

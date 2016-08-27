@@ -1,6 +1,6 @@
 <?php
 
-//namespace core\module\Field;
+namespace Frame\Core\Module;
 /**
  * Cette classe represente les champs d'un formulaire
  *

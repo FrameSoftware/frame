@@ -1,8 +1,10 @@
 <?php
 
     /**
-     * Frame - A lightweight PHP Framework
-     */
+ * Frame - A lightweight PHP Framework
+ */
+
+    namespace Frame\Core\Module;
 
      /**
       * Class Lang

@@ -13,21 +13,18 @@
  * This table wil containe the list of manager which will be load automatically
  */
 $autoload['manager'] = array(
-    'utilisateur'
 );
 
 /**
  * This table will contain the list of entity which will be load automatcally
  */
 $autoload['entity'] = array(
-    'utilisateur'
 );
 
 /**
  * This table will contain the list of module to load automatically by the frameworl
  */
 $autoload['modules'] = array(
-    
 );
 
 /**
@@ -35,5 +32,4 @@ $autoload['modules'] = array(
  */
 
 $autoload['class'] = array(
-    
 );

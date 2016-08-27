@@ -1,10 +1,9 @@
 <?php
 
-//namespace core\module;
+namespace Frame\Core\Module;
 
-require_once 'field.php';
+use Frame\Core\Controller;
 
-//use core\module\Field as CField;
 /**
  * Cette classe represente les formulaires 
  *
@@ -25,12 +24,12 @@ class Form {
     public function __construct($nom = NULL) {
         $this->nom = $nom;
         $this->hash = md5($nom);
-        $this->field = new Field();
+        $this->field = Controller::getInstance()->_module('Field');
     }
     
     public function open($action = null,$method = null){
-        echo "<form action='$action' method='$method' >\n";
-        $this->add_output("<form action='$action' method='$method' >\n");
+        echo "<form action=\"{$action}\" method=\"{$method}\" >\n";
+        $this->add_output("<form action=\"{$action}\" method=\"{$method}\" >\n");
     }
     
     public function close(){
@@ -39,7 +38,7 @@ class Form {
     }
     
     private function add_output($txt){
-        $this->input_txt_list =$this->input_txt_list. $txt;
+        $this->input_txt_list .= $txt;
     }
     
     /**

@@ -1,12 +1,12 @@
 <?php
 
-  namespace core\FrameView;
+namespace Frame\Core;
 
 //  require_once 'FrameException.php';
 //  require_once 'FrameLogger.php';
   
-  use core\FrameException as FException;
-  use core\FrameLogger as FLog;
+//  use core\FrameException as FException;
+//  use core\FrameLogger as FLog;
   
   
   
@@ -25,9 +25,9 @@
     public function __construct()
     {
       # code...
-      $this->file = './src/layout.php';
+      $this->file = FRAME_ROOT_PATH . '/src/layout.php';
       
-      $this->log = new FLog\FrameLogger();
+      $this->log = new FrameLogger();
     }
     
     /**
@@ -44,7 +44,7 @@
             if(file_exists($this->file)){//if the file is set
                 require_once $this->file;
             }else{
-                $ex =  new FException\FrameException(array(
+                $ex =  new Exception(array(
                     'message'=>'Impossible to find the page '.$this->file,
                     'code'=>404
                     ));
@@ -58,7 +58,7 @@
             
         }else{
             $this->log->log('ERROR',$this->file);
-            $ex =  new FException\FrameException(array(
+            $ex =  new Exception(array(
                     'message'=>'Impossible de charge la fichier layout',
                     'code'=>405
                     ));
@@ -73,7 +73,7 @@
         }
         $this->file = './src/'.$page.'.php';
         if(!file_exists($this->file)){
-            $ex =  new FException\FrameException(array(
+            $ex =  new Exception(array(
                     'message'=>'Impossible to find the page '.$this->file,
                     'code'=>404
                     ));
@@ -83,7 +83,7 @@
         require_once $this->file;
     }
     
-    public function generateErrorFrameException(FException\FrameException $ex){
+    public function generateErrorFrameException(Exception $ex){
         //cette methode doit afficher l'erreur
         $msg =  $ex->getMessage().'<br/>';
         $code = $ex->getCode();

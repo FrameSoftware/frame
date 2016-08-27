@@ -1,7 +1,6 @@
 <?php
 
-require_once './core/FrameView.php';
-require_once './core/FrameException.php';
+namespace Frame\Core\Module;
 
 use core\FrameView as FView;
 use core\FrameException as FException;
@@ -40,7 +39,7 @@ class DataBase {
     
     public function init_db(){
         
-        if(!$db_ini_file = parse_ini_file('./src/config/data_base.ini')){
+        if(!$db_ini_file = parse_ini_file('./src/Config/data_base.ini')){
             throw new FException\FrameException(array(
                 'message'=>'Erreur lors du chargement du fichier de la base de donnée',
                 'code'=>404,

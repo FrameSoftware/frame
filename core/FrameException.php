@@ -1,12 +1,12 @@
 <?php
 
-  namespace core\FrameException;
+namespace Frame\Core;
 
   /**
    * Cette classe va permettre de gerer les exceptions dans le framework
    *@author simoadonis@gmail.com
    */
-  class FrameException extends \ErrorException
+  class Exception extends \ErrorException
   {
 
     protected $message;

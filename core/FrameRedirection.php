@@ -1,6 +1,6 @@
 <?php
 
-  namespace core\FrameRedirection;
+namespace Frame\Core;
 
   /**
    * Cette classe va gerer la redirection
