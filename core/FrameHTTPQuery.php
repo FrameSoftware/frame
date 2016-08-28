@@ -9,6 +9,49 @@
      */
     class FrameHTTPQuery
     {
+
+        public function get_Exist($name){
+
+            if (array_key_exists($name, $_GET) ) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public function getParam($name){
+            if ($this->get_Exist($name)) {
+                return $_GET[$name];
+            } else {
+                throw new Exception(array(
+                    'message' => "Le parametre '{$name}' n'exite pas",
+                    'code' => 404
+                ));
+            }
+        }
+
+        public function post_Exist($name)
+        {
+            if (array_key_exists($name, $_POST)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public function postPram($name)
+        {
+            if ($this->post_Exist($name)) {
+                return $_POST[$name];
+            } else {
+                throw new Exception(array(
+                    'message' => "Le parametre '{$name}' n'exite pas",
+                    'code' => 404
+                ));
+            }
+        }
+
+
         public function postExist($name)
         {
             if (array_key_exists($name, $_POST) && $_POST[$name] != "") {
