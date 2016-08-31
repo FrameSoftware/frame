@@ -10,7 +10,7 @@
 
         public function indexAction()
         {
-            echo 'Je suis le controlleur par defaut  de BundleDefault et je fonctionne';
+            echo 'BundleDefault -> ControlleurDefault -> indexAction';
         }
 
     }

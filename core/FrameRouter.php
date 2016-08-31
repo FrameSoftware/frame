@@ -1,18 +1,11 @@
 <?php
 
+    /**
+     * Frame - A lightweight PHP framework
+     */
+
     namespace Frame\Core;
 
-    //les inclusion ici
-    //  require_once 'FrameException.php';
-    //  require_once 'FrameHTTPQuery.php';
-    //  require_once 'FrameHTTPResponse.php';
-    //  require_once 'FrameView.php';
-
-        //les use unregister_tick_function
-    //  use core\FrameException as FException;
-    //  use core\FrameHTTPQuery as FHTTPQuery;
-    //    use core\FrameHTTPResponse as FHTTPResponse;
-    //  use core\FrameView as FViewEngine;
     /**
      * Cette classe represente le router du site
      *
@@ -57,9 +50,9 @@
             $requete = new FrameHTTPQuery();
             //prevoir la gestion des Module(bundle)
             //on initialise les parametres de la requete ici
-            $this->getBundle($requete);//on cree le Module ici
-            $this->getControlleur($requete);//on cree le controlleur ici
-            $this->getMethod($requete);//on cree la methode ici
+            $this->getBundle();//on cree le Module ici
+            $this->getControlleur();//on cree le controlleur ici
+            $this->getMethod();//on cree la methode ici
             $response = new FrameHTTPResponse($data = array(
                 'bundle_name' => $this->bundle_name,
                 'bundle_path' => $this->bundle_path,
@@ -76,17 +69,20 @@
             //return FHTTPResponse\FrameHTTPResponse $response;
         }
 
-        public function getBundle(FrameHTTPQuery $query)
+        public function getBundle()
         {
-            $defaultBundle = ucfirst(strtolower(trim($this->bundle_default))); //on recupere le bundle par defaut
-            if ($query->getExist('b')) {
-                $defaultBundle = ucfirst(strtolower(trim($query->get('b'))));
-                //on met le nom en minuscule et on verifie avec les rReGexS
-            }//la creation du bundle est finit
+            $defaultBundle = $this->bundle_default;
+
+            $base_url = parse_url(Controller::getInstance()->loadModule('Configuration')->loadConfig('app.ini')['app_uri']);
+            $this_url = parse_url($_SERVER['REQUEST_URI']);
+
+            $this_bundle = explode('/', str_replace($base_url['path'], '', $this_url['path']))[0];
+
+            $bundle = ucfirst(strtolower(trim($this_bundle === '' ? $defaultBundle : $this_bundle)));
 
             //creation du nom du bundle
-            $bundleNom = 'Bundle' . $defaultBundle;
-            $bundlePath = 'src/Bundle' . $defaultBundle; //le chemin d'acces
+            $bundleNom = 'Bundle' . ucfirst(strtolower(trim($bundle)));
+            $bundlePath = FRAME_SRC_PATH . '/' . $bundleNom; //le chemin d'acces
             if (is_dir($bundlePath)) {
                 //on stocke les données par rapport au conrolleur
                 $this->bundle_name = $bundleNom;
@@ -107,24 +103,25 @@
          * ce qui devra estre changer pour etre stocker dans le fichier de configutation
          * l'exception FrameException est lancer si le fichier du controlleur n'est pas trouver
          */
-        public function getControlleur(FrameHTTPQuery $query)
+        public function getControlleur()
         {
             $defaultController = $this->default_controlleur;
-            if ($query->getExist('c')) {
-                $defaultController = trim($query->get('c'));
-                $defaultController = ucfirst(strtolower(trim($defaultController)));
-                //on met le nom en minuscule et on verifie avec les rReGexS
-            }//la creation du controlleur est finit
+
+            $base_url = parse_url(Controller::getInstance()->loadModule('Configuration')->loadConfig('app.ini')['app_uri']);
+            $this_url = parse_url($_SERVER['REQUEST_URI']);
+
+            $this_controller = explode('/', str_replace($base_url['path'], '', $this_url['path']));
+            $this_controller = (array_key_exists(1, $this_controller)) ? $this_controller[1] : '';
+
+            $controller = $this_controller === '' ? $defaultController : $this_controller;
 
             //creation du nom du controlleur
-            $classeControlleur = 'Controlleur' . $defaultController;
+            $classeControlleur = 'Controlleur' . ucfirst(strtolower(trim($controller)));
             $fichierControlleur = $this->bundle_path . '/controller/' . $classeControlleur . '.php'; //le chemin d'acces
             if (file_exists($fichierControlleur)) {
                 //on stocke les données par rapport au conrolleur
                 $this->controlleur_class = $classeControlleur;
-
                 $this->controlleur_path = $fichierControlleur;
-
             } else {
                 throw new Exception(array(
                     'message' => "impossible de trouver le controlleur '$classeControlleur' dans le bundle '$this->bundle_name' ",
@@ -138,13 +135,18 @@
         /*
         * retourne si sa existe la methode d'une requete
         */
-        public function getMethod(FrameHTTPQuery $query)
+        public function getMethod()
         {
             $defaultMethod = $this->default_method;
-            if ($query->getExist('m')) {
-                $this->method_name = $query->get('m') . 'Action'; //on recupere l'action
-            } else {
-                $this->method_name = $defaultMethod;
-            }
+
+            $base_url = parse_url(Controller::getInstance()->loadModule('Configuration')->loadConfig('app.ini')['app_uri']);
+            $this_url = parse_url($_SERVER['REQUEST_URI']);
+
+            $this_method = explode('/', str_replace($base_url['path'], '', $this_url['path']));
+            $this_method = (array_key_exists(2, $this_method)) ? $this_method[2] : '';
+
+            $method = $this_method === '' ? $defaultMethod : $this_method;
+
+            $this->method_name = $method . 'Action';
         }
     }
